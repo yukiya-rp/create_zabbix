@@ -1,0 +1,9 @@
+- hosts: webservers
+  become: true
+
+  vars_files:
+    - ./database_vars.text
+    
+  roles:
+    - httpd
+    - zabbix-server

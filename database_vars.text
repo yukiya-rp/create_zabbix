@@ -1,0 +1,14 @@
+zabbix_db: zabbix_db
+zabbix_user: zabbix
+zabbix_password: zabbix
+zabbix_host: web
+
+databases:
+  - name: zabbix_db
+    user: zabbix
+    passwd: zabbix
+    host: web
+  - name: zabbix_db2
+    user: zabbix2
+    passwd: zabbix2
+    host: web

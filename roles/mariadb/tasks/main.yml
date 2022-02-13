@@ -1,0 +1,49 @@
+- name: MariaDBのリポジトリをコピー
+  copy:
+    src: "../files/MariaDB.repo"
+    dest: /etc/yum.repos.d/MariaDB.repo
+
+- name: MariaDBのリポジトリを追加
+  replace:
+    path: /etc/yum.repos.d/MariaDB.repo
+    regexp: MariaDB_version
+    replace: "{{ MariaDB_version }}"
+
+- name: MariaDBのインストール
+  yum:
+    name: "{{ item }}"
+  with_items:
+   - MariaDB-server
+   - MySQL-python
+
+- name: mariadbサービス起動
+  service:
+    name: mariadb
+    state: started
+
+- name: dbの作成
+  mysql_db:
+    login_user: root
+    login_password:
+    name: "{{ item['name'] }}"
+    encoding: utf8
+    collation: utf8_bin
+    state: present
+  loop: "{{ databases }}"
+
+- name: ユーザの作成
+  mysql_user:
+    login_user: root
+    login_password: ""
+    name: "{{ item['user'] }}"
+    password: "{{ item['passwd'] }}"
+    priv: "{{ item['name'] }}.*:ALL"
+    host: "{{ item['host'] }}"
+  loop: "{{ databases }}"
+
+- name: 再起動・自動起動設定
+  systemd:
+    name: mariadb
+    state: restarted
+    enabled: yes
+

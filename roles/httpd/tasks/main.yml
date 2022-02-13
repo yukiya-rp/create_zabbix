@@ -1,0 +1,9 @@
+- name: apacheのインストール
+  yum:
+    name: httpd
+
+- name: apacheの起動設定
+  systemd:
+    state: started
+    name: httpd
+    enabled: yes

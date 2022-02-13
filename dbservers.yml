@@ -1,0 +1,8 @@
+- hosts: dbservers
+  become: true
+
+  vars_files:
+    - ./database_vars.text  
+
+  roles:
+    - mariadb
